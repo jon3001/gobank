@@ -1,0 +1,5 @@
+.vscode/
+.history/
+*.vsix
+bin/
+*.exe
