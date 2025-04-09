@@ -13,7 +13,7 @@ var (
 )
 
 func init() {
-	jwtSecret := flag.String("jwtSecret", "hunter651c969ee2f44c7a917b9c5eb41fbbea", "The JWT Secret")
+	jwtSecret := flag.String("jwtSecret", "TESTING-ONLY-651c969ee2f44c7a917b9c5eb41fbbea", "The JWT Secret")
 	flag.Parse()
 
 	if *jwtSecret == "" {
