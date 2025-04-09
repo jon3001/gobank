@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	"time"
 
 	jwt "github.com/golang-jwt/jwt/v5"
 	"github.com/gorilla/mux"
@@ -88,6 +89,13 @@ func (s *APIServer) handleCreateAccount(w http.ResponseWriter, r *http.Request) 
 		return nil
 	}
 
+	tokenString, err := createJWT(account)
+	if err != nil {
+		return err
+	}
+
+	fmt.Println("JWT Token: ", tokenString)
+
 	return WriteJSON(w, http.StatusOK, account)
 }
 
@@ -126,6 +134,18 @@ func WriteJSON(w http.ResponseWriter, status int, v any) error {
 	w.Header().Add("Content-Type", "application/json")
 	w.WriteHeader(status)
 	return json.NewEncoder(w).Encode(v)
+}
+
+func createJWT(account *Account) (string, error) {
+	claims := &jwt.MapClaims{
+		"expiresAt":     jwt.NewNumericDate(time.Now().Add(24 * time.Hour)),
+		"accountNumber": account.Number,
+	}
+
+	secret := JwtSecret
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+
+	return token.SignedString([]byte(secret))
 }
 
 func withJWTAuth(handlerFunc http.HandlerFunc) http.HandlerFunc {
