@@ -13,6 +13,7 @@ var (
 )
 
 func init() {
+	// !!! NB bad practice to provide a hardcoded secret - would be a chance of this leaking to PROD !!!
 	jwtSecret := flag.String("jwtSecret", "TESTING-ONLY-651c969ee2f44c7a917b9c5eb41fbbea", "The JWT Secret")
 	flag.Parse()
 
