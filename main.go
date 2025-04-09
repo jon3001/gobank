@@ -1,11 +1,27 @@
 package main
 
 import (
+	"flag"
 	"log"
 	"os"
 	"os/signal"
 	"syscall"
 )
+
+var (
+	JwtSecret string
+)
+
+func init() {
+	jwtSecret := flag.String("jwtSecret", "hunter651c969ee2f44c7a917b9c5eb41fbbea", "The JWT Secret")
+	flag.Parse()
+
+	if *jwtSecret == "" {
+		log.Fatal("JWT Secret not presented via command line args")
+	}
+
+	JwtSecret = *jwtSecret
+}
 
 func main() {
 	done := make(chan os.Signal, 1)
